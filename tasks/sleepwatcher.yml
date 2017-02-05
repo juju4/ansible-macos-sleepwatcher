@@ -1,5 +1,11 @@
 ---
 
+- name: ensure download directory exists
+  file:
+    dest: "{{ install_archives }}"
+    state: directory
+    mode: '0755'
+
 - name: download sleepwatcher
   get_url:
     url: 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
