@@ -1,0 +1,5 @@
+#!/bin/sh
+## {{ ansible_managed }} (sleepwatcher)
+{% for cmd in sleepwatcher_sleep_cmds %}
+{{ cmd }}
+{% endfor %}

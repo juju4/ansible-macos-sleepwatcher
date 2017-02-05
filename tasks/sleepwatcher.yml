@@ -1,0 +1,63 @@
+---
+
+- name: download sleepwatcher
+  get_url:
+    url: 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
+    dest: "{{ install_archives }}"
+    mode: '0644'
+    checksum: 'sha256:c04ac1c49e2b5785ed5d5c375854c9c0b9e959affa46adab57985e4123e8b6be'
+
+- name: uncompress sleepwatcher
+## Note: require GNU tar, either with macports, either homebrew or other means
+#  unarchive:
+#    src: "{{ install_archives }}/sleepwatcher_2.2.tgz"
+#    dest: "{{ install_archives }}"
+#  environment:
+#    PATH: '/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
+  command: "tar xzf {{ install_archives }}/sleepwatcher_2.2.tgz chdir={{ install_archives }} creates={{ install_archives }}/sleepwatcher_2.2"
+
+- name: ensure appropriate directories exist
+  file: dest={{ item.d }} state=directory mode={{ item.m }}
+  with_items:
+    - { d: /usr/local/sbin, m: '0755' }
+    - { d: /usr/local/share/man/man8, m: '0755' }
+    
+- name: install files
+  copy:
+    src: "{{ install_archives }}/sleepwatcher_2.2/{{ item.s }}"
+    dest: "{{ macos_prefix }}/{{ item.d }}"
+    mode: "{{ item.m }}"
+    remote_src: no
+  with_items:
+    - { s: sleepwatcher, d: 'sbin/sleepwatcher', m: '0755' }
+    - { s: sleepwatcher.8, d: 'share/man/man8/sleepwatcher.8', m: '0644' }
+    
+- name: install LaunchAgents per user
+  copy:
+    src: "{{ install_archives }}/sleepwatcher_2.2/config/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
+    dest: "/Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
+    mode: "0644"
+    remote_src: no
+  with_items: "{{ sleepwatcher_users }}"
+
+- name: install default sleep script per user
+  template:
+    src: sleep.j2
+    dest: "/Users/{{ item }}/.sleep"
+    mode: '0755'
+  with_items: "{{ sleepwatcher_users }}"
+
+- name: install default wakeup script per user
+  template:
+    src: wakeup.j2
+    dest: "/Users/{{ item }}/.wakeup"
+    mode: '0755'
+  with_items: "{{ sleepwatcher_users }}"
+
+## FIXME!
+#- name: enable launchd user sleepwatcher
+#  command: "launchctl -w load /Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist
+#  become: yes
+#  become_user: "{{ item }}"
+#  with_items: "{{ sleepwatcher_users }}"
+

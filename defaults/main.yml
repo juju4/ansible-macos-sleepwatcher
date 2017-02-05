@@ -1,0 +1,23 @@
+---
+
+install_archives: /private/var/_install
+macos_prefix: /usr/local
+
+## adapted from http://hints.macworld.com/article.php?story=20080329201951648
+
+sleepwatcher_users: []
+#sleepwatcher_users:
+#  - user1
+
+sleepwatcher_sleep_cmds:
+#  - osascript -e 'tell application "Finder" to eject (disks where free space â‰  0)'
+  - osascript -e 'tell application "Finder" to eject (every disk whose ejectable is true)'
+  - osascript -e 'tell application "KeePassX" to quit'
+
+sleepwatcher_wakeup_cmds:
+#  - /usr/sbin/diskutil list | grep -e ' \+[0-9]\+: \+[^ ]\+ [^ ]\+' | sed 's/.*\(disk[0-9].*\)/\1/' | xargs -I{} /usr/sbin/diskutil mount {}
+## exclude to mount internal disks (here disk0*, disk1*)
+## Note: will not mount Encrypted Time Machine disk
+  - /usr/sbin/diskutil list | awk '/\s*[0-9]+:\s*[^ ]*\s*\S*\s*.*disk[2-9]s/ && !/EFI/ && !/Boot OS X/ { print $NF }' | xargs -I{} /usr/sbin/diskutil mount {}
+  - osascript -e 'set volume 0'
+
