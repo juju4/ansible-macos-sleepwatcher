@@ -27,23 +27,30 @@
   with_items:
     - { d: /usr/local/sbin, m: '0755' }
     - { d: /usr/local/share/man/man8, m: '0755' }
-    
+
 - name: install files
   copy:
     src: "{{ install_archives }}/sleepwatcher_2.2/{{ item.s }}"
     dest: "{{ macos_prefix }}/{{ item.d }}"
     mode: "{{ item.m }}"
-    remote_src: no
+    remote_src: yes
   with_items:
     - { s: sleepwatcher, d: 'sbin/sleepwatcher', m: '0755' }
     - { s: sleepwatcher.8, d: 'share/man/man8/sleepwatcher.8', m: '0644' }
-    
+
+- name: ensure LaunchAgents directories exist
+  file:
+    dest: "/Users/{{ item }}/Library/LaunchAgents"
+    state: directory
+    mode: '0755'
+  with_items: "{{ sleepwatcher_users }}"
+
 - name: install LaunchAgents per user
   copy:
     src: "{{ install_archives }}/sleepwatcher_2.2/config/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     dest: "/Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     mode: "0644"
-    remote_src: no
+    remote_src: yes
   with_items: "{{ sleepwatcher_users }}"
 
 - name: install default sleep script per user
@@ -51,6 +58,7 @@
     src: sleep.j2
     dest: "/Users/{{ item }}/.sleep"
     mode: '0755'
+    backup: yes
   with_items: "{{ sleepwatcher_users }}"
 
 - name: install default wakeup script per user
@@ -58,6 +66,7 @@
     src: wakeup.j2
     dest: "/Users/{{ item }}/.wakeup"
     mode: '0755'
+    backup: yes
   with_items: "{{ sleepwatcher_users }}"
 
 ## FIXME!
