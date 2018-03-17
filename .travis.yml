@@ -12,6 +12,20 @@ install:
   - uname -a
   - python --version
   - brew update
+  - brew install libidn2
+  - brew install openssl
+  - brew upgrade openssl
+  - brew ls --verbose openssl
+#  - brew install python3
+  - brew upgrade python
+  - brew update
+  - brew doctor || true
+  - python --version
+#  - pip --version
+  - python -c "import ssl; print(ssl.OPENSSL_VERSION)"
+  - python3 --version
+  - python3 -c "import ssl; print(ssl.OPENSSL_VERSION)"
+  - pip3 --version
 #  - which pip
 ## error: could not create '/Library/Python/2.7/site-packages/ansible': Permission denied
 #  - pip install ansible ansible-lint
@@ -19,8 +33,13 @@ install:
   - env
   - find . -ls
 #  - find $HOME/Library $HOME/.local -ls || true
-  - brew install ansible
+install:
+#  - brew install ansible
+  - python -c 'import ssl; ssl.PROTOCOL_TLSv1_2' || true
+  - pip3 install ansible
+  - python3 -c 'import ssl; ssl.PROTOCOL_TLSv1_2'
   - ansible --version
+  - which ansible
   - "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
 script:
   - "echo \"[test-kitchen]\nlocalhost\" > inventory"
@@ -31,11 +50,11 @@ script:
   - "ansible-playbook -i inventory --syntax-check test/integration/default/default.yml"
 
 # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i inventory --connection=local --sudo -vvvv test/integration/default/default.yml"
+  - "ansible-playbook -i inventory --connection=local --become -vvvv test/integration/default/default.yml"
 
 # Run the role/playbook again, checking to make sure it's idempotent.
 ## FIXME! known fail
-  - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --sudo | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)"
+  - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --become | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)"
 
   - "ls -A $HOME/"
 
