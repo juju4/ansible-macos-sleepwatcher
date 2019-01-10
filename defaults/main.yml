@@ -21,4 +21,3 @@ sleepwatcher_wakeup_cmds:
 ## Note: will not mount Encrypted Time Machine disk
   - /usr/sbin/diskutil list | awk '/\s*[0-9]+:\s*[^ ]*\s*\S*\s*.*disk[2-9]s/ && !/EFI/ && !/Boot OS X/ { print $NF }' | xargs -I{} /usr/sbin/diskutil mount {}
   - osascript -e 'set volume 0'
-

@@ -2,5 +2,4 @@
 
 - hosts: vagrantselect
   roles:
-    - juju4.macos-sleepwatcher
-
+    - juju4.macos_sleepwatcher
