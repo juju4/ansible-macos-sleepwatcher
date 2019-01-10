@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: macos_sleepwatcher
   author: juju4
   description: macOS cli tool that monitor and action on sleep/wakeup/idleness
   license: BSD
