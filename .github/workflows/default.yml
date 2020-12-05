@@ -39,7 +39,7 @@ jobs:
       - name: yamllint
         run: |
           pwd
-          find -ls
+          find .
           cd $GITHUB_WORKSPACE/juju4.macos_sleepwatcher && yamllint .
       - name: ansible-lint
         run: |
