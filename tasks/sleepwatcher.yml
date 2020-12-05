@@ -14,19 +14,19 @@
     checksum: 'sha256:c04ac1c49e2b5785ed5d5c375854c9c0b9e959affa46adab57985e4123e8b6be'
 
 - name: uncompress sleepwatcher
-## Note: require GNU tar, either with macports, either homebrew or other means
-#  unarchive:
-#    src: "{{ install_archives }}/sleepwatcher_2.2.tgz"
-#    dest: "{{ install_archives }}"
-#  environment:
-#    PATH: '/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
-  command: "tar xzf {{ install_archives }}/sleepwatcher_2.2.tgz"
+  ## Note: require GNU tar, either with macports, either homebrew or other means
+  # unarchive:
+  #   src: "{{ install_archives }}/sleepwatcher_2.2.tgz"
+  #   dest: "{{ install_archives }}"
+  # environment:
+  #   PATH: '/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
+  command: "tar xzf {{ install_archives }}/sleepwatcher_2.2.tgz"  # noqa 303
   args:
     chdir: "{{ install_archives }}"
     creates: "{{ install_archives }}/sleepwatcher_2.2"
 
 - name: ensure appropriate directories exist
-  file: dest={{ item.d }} state=directory mode={{ item.m }}
+  file: dest={{ item.d }} state=directory mode={{ item.m }}
   with_items:
     - { d: /usr/local/sbin, m: '0755' }
     - { d: /usr/local/share/man/man8, m: '0755' }
@@ -77,9 +77,9 @@
   with_items: "{{ sleepwatcher_users }}"
 
 ## FIXME!
-#- name: enable launchd user sleepwatcher
-#  command: >
-#    launchctl -w load /Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist
-#  become: yes
-#  become_user: "{{ item }}"
-#  with_items: "{{ sleepwatcher_users }}"
+# - name: enable launchd user sleepwatcher
+#   command: >
+#     launchctl -w load /Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist
+#   become: yes
+#   become_user: "{{ item }}"
+#   with_items: "{{ sleepwatcher_users }}"
