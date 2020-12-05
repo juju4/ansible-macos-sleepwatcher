@@ -4,6 +4,8 @@ os:
   - osx
 
 osx_image:
+# OS X 10.15
+  - xcode12
 # OS X 10.14
   - xcode11.2
 # OS X 10.13
@@ -23,7 +25,7 @@ before_install:
   - brew install openssl
   - brew outdated
 # xcode9.2: force python upgrade...
-  - if (brew outdated | grep python > /dev/null); then brew upgrade python || brew link --overwrite python; fi
+  - if (brew outdated | grep python > /dev/null); then brew upgrade python@3.8 || brew link --overwrite python; fi
   - if (brew outdated | grep openssl > /dev/null); then brew upgrade openssl || true; fi
   - brew ls --verbose openssl
   - brew update
@@ -35,9 +37,6 @@ before_install:
   - python3 -c "import ssl; print(ssl.OPENSSL_VERSION)"
   - pip3 --version
 #  - which pip
-## error: could not create '/Library/Python/2.7/site-packages/ansible': Permission denied
-#  - pip install ansible ansible-lint
-#  - pip install --user ansible ansible-lint
   - env
   - find . -ls
 #  - find $HOME/Library $HOME/.local -ls || true
@@ -53,7 +52,7 @@ install:
 script:
   - "echo \"localhost\" > inventory"
 
-#  - "ansible-lint tasks/main.yml"
+  - "ansible-lint tasks/main.yml || true"
 
 # Check the role/playbook's syntax.
   - "ansible-playbook -i inventory --syntax-check test/integration/default/default.yml"
