@@ -1,5 +1,9 @@
 [![Build Status - Master](https://travis-ci.org/juju4/ansible-macos-sleepwatcher.svg?branch=master)](https://travis-ci.org/juju4/ansible-macos-sleepwatcher)
 [![Build Status - Devel](https://travis-ci.org/juju4/ansible-macos-sleepwatcher.svg?branch=devel)](https://travis-ci.org/juju4/ansible-macos-sleepwatcher/branches)
+
+[![Actions Status - Master](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Amaster)
+[![Actions Status - Devel](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Adevel)
+
 # macOS sleepwatcher ansible role
 
 Ansible role to setup sleepwatcher on macOS.
@@ -13,10 +17,11 @@ It was tested on the following versions:
  * 1.9
  * 2.0
  * 2.2
+ * 2.10
 
 ### Operating systems
 
-MacOS 10.11, 10.12
+MacOS 10.11, 10.12, 10.15
 
 ## Example Playbook
 
@@ -35,7 +40,7 @@ Nothing specific for now.
 
 ## Continuous integration
 
-This role has a travis basic test (for github).
+This role has a travis basic test (for github) and Github action.
 
 ## Troubleshooting & Known issues
 
@@ -43,4 +48,3 @@ This role has a travis basic test (for github).
 ## License
 
 BSD 2-clause
-
