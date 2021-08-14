@@ -57,4 +57,3 @@ setup() {
     [ "$status" -eq 0 ]
     [[ "$output" =~ "\"version\":\"1.0\"" ]]
 }
-
