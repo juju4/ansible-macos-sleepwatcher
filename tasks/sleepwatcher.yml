@@ -24,10 +24,10 @@
   #   dest: "{{ install_archives }}"
   # environment:
   #   PATH: '/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
-  command: "tar xzf {{ install_archives }}/sleepwatcher_2.2.tgz"  # noqa 303
+  command: "tar xzf {{ install_archives }}/{{ sleepwatcher_url | basename }}"  # noqa 303
   args:
     chdir: "{{ install_archives }}"
-    creates: "{{ install_archives }}/sleepwatcher_2.2"
+    creates: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}"
 
 - name: ensure appropriate directories exist
   file: dest={{ item.d }} state=directory mode={{ item.m }}
@@ -37,7 +37,7 @@
 
 - name: install files
   copy:
-    src: "{{ install_archives }}/sleepwatcher_2.2/{{ item.s }}"
+    src: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}/{{ item.s }}"
     dest: "{{ macos_prefix }}/{{ item.d }}"
     mode: "{{ item.m }}"
     remote_src: yes
@@ -55,7 +55,7 @@
 
 - name: install LaunchAgents per user
   copy:
-    src: "{{ install_archives }}/sleepwatcher_2.2/config/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
+    src: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}/config/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     dest: "/Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     mode: "0644"
     owner: "{{ item }}"
