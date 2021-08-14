@@ -5,13 +5,17 @@
     dest: "{{ install_archives }}"
     state: directory
     mode: '0755'
+  when:
+    - install_archives != '/tmp'
+    - install_archives != '/private/tmp'
+    - install_archives != '/Users/Shared'
 
 - name: download sleepwatcher
   get_url:
-    url: 'http://www.bernhard-baehr.de/sleepwatcher_2.2.tgz'
-    dest: "{{ install_archives }}"
+    url: "{{ sleepwatcher_url }}"
+    dest: "{{ install_archives }}/{{ sleepwatcher_url | basename }}"
     mode: '0644'
-    checksum: 'sha256:c04ac1c49e2b5785ed5d5c375854c9c0b9e959affa46adab57985e4123e8b6be'
+    checksum: "{{ sleepwatcher_checksum }}"
 
 - name: uncompress sleepwatcher
   ## Note: require GNU tar, either with macports, either homebrew or other means

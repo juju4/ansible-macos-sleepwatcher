@@ -1,5 +1,8 @@
 ---
 
+sleepwatcher_url: 'http://www.bernhard-baehr.de/sleepwatcher_2.2.1.tgz'
+sleepwatcher_checksum: 'sha256:4bf1656702167871141fbc119a844d1363d89994e1a67027f0e773023ae9643e'
+
 install_archives: /private/var/_install
 macos_prefix: /usr/local
 
