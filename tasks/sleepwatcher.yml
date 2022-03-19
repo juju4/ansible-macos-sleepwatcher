@@ -1,7 +1,7 @@
 ---
 
 - name: ensure download directory exists
-  file:
+  ansible.builtin.file:
     dest: "{{ install_archives }}"
     state: directory
     mode: '0755'
@@ -11,7 +11,7 @@
     - install_archives != '/Users/Shared'
 
 - name: download sleepwatcher
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ sleepwatcher_url }}"
     dest: "{{ install_archives }}/{{ sleepwatcher_url | basename }}"
     mode: '0644'
@@ -19,24 +19,24 @@
 
 - name: uncompress sleepwatcher
   ## Note: require GNU tar, either with macports, either homebrew or other means
-  # unarchive:
+  # ansible.builtin.unarchive:
   #   src: "{{ install_archives }}/sleepwatcher_2.2.tgz"
   #   dest: "{{ install_archives }}"
   # environment:
   #   PATH: '/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin'
-  command: "tar xzf {{ install_archives }}/{{ sleepwatcher_url | basename }}"  # noqa 303
+  ansible.builtin.command: "tar xzf {{ install_archives }}/{{ sleepwatcher_url | basename }}"  # noqa 303
   args:
     chdir: "{{ install_archives }}"
     creates: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}"
 
 - name: ensure appropriate directories exist
-  file: dest={{ item.d }} state=directory mode={{ item.m }}
+  ansible.builtin.file: dest={{ item.d }} state=directory mode={{ item.m }}
   with_items:
     - { d: /usr/local/sbin, m: '0755' }
     - { d: /usr/local/share/man/man8, m: '0755' }
 
 - name: install files
-  copy:
+  ansible.builtin.copy:
     src: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}/{{ item.s }}"
     dest: "{{ macos_prefix }}/{{ item.d }}"
     mode: "{{ item.m }}"
@@ -46,7 +46,7 @@
     - { s: sleepwatcher.8, d: 'share/man/man8/sleepwatcher.8', m: '0644' }
 
 - name: ensure LaunchAgents directories exist
-  file:
+  ansible.builtin.file:
     dest: "/Users/{{ item }}/Library/LaunchAgents"
     state: directory
     mode: '0755'
@@ -54,7 +54,7 @@
   with_items: "{{ sleepwatcher_users }}"
 
 - name: install LaunchAgents per user
-  copy:
+  ansible.builtin.copy:
     src: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}/config/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     dest: "/Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist"
     mode: "0644"
@@ -63,7 +63,7 @@
   with_items: "{{ sleepwatcher_users }}"
 
 - name: install default sleep script per user
-  template:
+  ansible.builtin.template:
     src: sleep.j2
     dest: "/Users/{{ item }}/.sleep"
     mode: '0755'
@@ -72,7 +72,7 @@
   with_items: "{{ sleepwatcher_users }}"
 
 - name: install default wakeup script per user
-  template:
+  ansible.builtin.template:
     src: wakeup.j2
     dest: "/Users/{{ item }}/.wakeup"
     mode: '0755'
@@ -82,7 +82,7 @@
 
 ## FIXME!
 # - name: enable launchd user sleepwatcher
-#   command: >
+#   ansible.builtin.command: >
 #     launchctl -w load /Users/{{ item }}/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher-20compatibility-localuser.plist
 #   become: yes
 #   become_user: "{{ item }}"
