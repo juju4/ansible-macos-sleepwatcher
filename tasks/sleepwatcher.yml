@@ -30,7 +30,10 @@
     creates: "{{ install_archives }}/{{ sleepwatcher_url | basename | regex_replace('.tgz$', '') }}"
 
 - name: Ensure appropriate directories exist
-  ansible.builtin.file: dest={{ item.d }} state=directory mode={{ item.m }}
+  ansible.builtin.file:
+    dest: "{{ item.d }}"
+    state: "directory"
+    mode: "{{ item.m }}"
   with_items:
     - { d: /usr/local/sbin, m: '0755' }
     - { d: /usr/local/share/man/man8, m: '0755' }

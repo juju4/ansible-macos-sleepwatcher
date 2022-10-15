@@ -1,4 +1,5 @@
 ---
 
-- import_tasks: sleepwatcher.yml
+- name: Import sleepwatcher
+  ansible.builtin.import_tasks: sleepwatcher.yml
   when: ansible_os_family == "Darwin"
