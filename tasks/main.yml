@@ -2,4 +2,4 @@
 
 - name: Import sleepwatcher
   ansible.builtin.import_tasks: sleepwatcher.yml
-  when: ansible_os_family == "Darwin"
+  when: ansible_facts['os_family'] == "Darwin"
