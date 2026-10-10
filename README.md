@@ -1,7 +1,7 @@
-[![Actions Status - Master](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Amaster)
-[![Actions Status - Devel](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Adevel)
-
 # macOS sleepwatcher ansible role
+
+[![Actions Status - Main](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Amain)
+[![Actions Status - Devel](https://github.com/juju4/ansible-macos-sleepwatcher/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-macos-sleepwatcher/actions?query=branch%3Adevel)
 
 Ansible role to setup sleepwatcher on macOS.
 http://www.bernhard-baehr.de/
